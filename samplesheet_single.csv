@@ -1,0 +1,2 @@
+sample,lane,fastq_1,fastq_2,sex,phenotype,paternal_id,maternal_id,case_id
+dna_01,1,/data/cephfs-2/unmirrored/groups/kircher/SexDiversity/250130_LH00253_0200_A22JF7LLT4_A4842_FASTQ/A4842_DNA_01_S1_L001_R1_001.fastq.gz,/data/cephfs-2/unmirrored/groups/kircher/SexDiversity/250130_LH00253_0200_A22JF7LLT4_A4842_FASTQ/A4842_DNA_01_S1_L001_R2_001.fastq.gz,1,2,0,0,dnafirst

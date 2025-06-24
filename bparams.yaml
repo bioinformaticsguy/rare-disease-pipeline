@@ -1,0 +1,2 @@
+input: "/data/cephfs-1/work/groups/kircher/users/alhassa_m/run_nf/samplesheet_single.csv"
+outdir: "/data/cephfs-1/scratch/groups/kircher/users/alhassa_m/data_out_nf/outdir/010_big_data"

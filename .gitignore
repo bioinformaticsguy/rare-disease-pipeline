@@ -1,0 +1,14 @@
+# Ignore Folders
+data/
+old_out/
+
+# Ignore hidden files but not gitignore
+.*
+!.gitignore
+
+# Specific patterns to be extra clear:
+.nextflow.log*
+.nextflow/
+*.swp
+*.csv.swp
+out.log
