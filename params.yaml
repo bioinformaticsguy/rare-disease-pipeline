@@ -1,2 +1,2 @@
 input: "/data/cephfs-1/home/users/alhassa_m/work/run_nf/rare/sssheet.csv"
-outdir: "/data/cephfs-1/scratch/groups/kircher/users/alhassa_m/data_out_nf/outdir/009_max_profile_conf_smalldata"
+outdir: "/data/cephfs-1/scratch/groups/kircher/users/alhassa_m/data_out_nf/outdir/010_without_TestProfile"

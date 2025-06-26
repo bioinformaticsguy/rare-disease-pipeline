@@ -1,6 +1,7 @@
 # Ignore Folders
 data/
 old_out/
+work/
 
 # Ignore hidden files but not gitignore
 .*
