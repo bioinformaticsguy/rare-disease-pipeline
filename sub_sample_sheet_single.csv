@@ -1,0 +1,2 @@
+sample,lane,fastq_1,fastq_2,sex,phenotype,paternal_id,maternal_id,case_id
+dnaS_01,1,/data/cephfs-1/home/users/alhassa_m/work/run_nf/rare/data/rawdata/subsample_R1.fastq.gz,/data/cephfs-1/home/users/alhassa_m/work/run_nf/rare/data/rawdata/subsample_R2.fastq.gz,1,2,0,0,dnaSfirst
