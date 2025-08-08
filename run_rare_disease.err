@@ -1,0 +1,15 @@
+Loading singularity/v4.1.3
+  Loading requirement: go/1.21.11
+Loading nextflow/v24.04.3
+  Loading requirement: openjdk/11.0.6_10
+Loading singularity/v4.1.3
+  Loading requirement: go/1.21.11
+Loading nextflow/v24.04.3
+  Loading requirement: openjdk/11.0.6_10
+Loading singularity/v4.1.3
+  Loading requirement: go/1.21.11
+Loading nextflow/v24.04.3
+  Loading requirement: openjdk/11.0.6_10
+[33mNextflow 25.04.6 is available - Please consider updating your version to it(B[m
+slurmstepd-node35: error: *** JOB 1506081 ON node35 CANCELLED AT 2025-08-07T12:18:28 DUE TO TIME LIMIT ***
+[33mNextflow 25.04.6 is available - Please consider updating your version to it(B[m
