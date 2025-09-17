@@ -15,3 +15,5 @@ workdir/
 *.csv.swp
 out.log
 dag.png
+
+/logs
