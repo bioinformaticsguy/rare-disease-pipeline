@@ -23,4 +23,4 @@ nextflow -v
 # Run the rare diseae workflow
 echo "Running Next flow rare disease pipeline..."
 pwd
-nextflow run nf-core/raredisease -revision 2.6.0 -profile singularity -c omics.config -params-file omics.yaml -resume
+nextflow run nf-core/raredisease -revision 2.6.0 -profile singularity -c /configs/oomics_minimal.config -params-file /yamls/omics.yaml -resume
