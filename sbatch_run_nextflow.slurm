@@ -6,8 +6,8 @@
 #SBATCH --mem=16GB
 #SBATCH --tmp=100G
 #SBATCH --job-name=run_rare_disease
-#SBATCH --output=run_rare_disease.out
-#SBATCH --error=run_rare_disease.err
+#SBATCH --output=logs/run_rare_disease.out
+#SBATCH --error=logs/run_rare_disease.err
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=alihassan1697@gmail.com
 
