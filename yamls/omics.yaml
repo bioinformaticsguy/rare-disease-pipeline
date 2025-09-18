@@ -1,2 +1,2 @@
 input: "/data/humangen_kircherlab/Users/hassan/run_rare/rare-disease-pipeline/samplesheets/omics.csv"
-outdir: "/data/humangen_kircherlab/hassan/rare_disease_outputs/00000_test_run_small"
+outdir: "/data/humangen_kircherlab/Users/hassan/rare_disease_outputs/00000_test_run_small"
