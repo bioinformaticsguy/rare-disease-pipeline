@@ -1,0 +1,2 @@
+sample,lane,fastq_1,fastq_2,sex,phenotype,paternal_id,maternal_id,case_id
+GS608,1,/data/humangen_kircherlab/Users/hassan/data/combined_fq/output/GS608/GS608.R1.fq.gz,/data/humangen_kircherlab/Users/hassan/data/combined_fq/output/GS608/GS608.R2.fq.gz,0,2,0,0,case_GS608

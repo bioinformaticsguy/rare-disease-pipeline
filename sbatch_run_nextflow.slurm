@@ -6,8 +6,8 @@
 #SBATCH --mem=16GB
 #SBATCH --tmp=100G
 #SBATCH --job-name=run_rare_disease
-#SBATCH --output=logs/run_rare_disease.out
-#SBATCH --error=logs/run_rare_disease.err
+#SBATCH --output=logs/%j_%u_%N_run_rare_disease.out
+#SBATCH --error=logs/%j_%u_%N_run_rare_disease.err
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=alihassan1697@gmail.com
 
@@ -23,4 +23,4 @@ nextflow -v
 # Run the rare diseae workflow
 echo "Running Next flow rare disease pipeline..."
 pwd
-nextflow run nf-core/raredisease -revision 2.6.0 -profile singularity -c configs/oomics_minimal.config -params-file yamls/omics.yaml
+nextflow run nf-core/raredisease -revision 2.6.0 -profile singularity -c configs/oomics_minimal.config -params-file yamls/omics_nadine_KSamples.yaml -resume
