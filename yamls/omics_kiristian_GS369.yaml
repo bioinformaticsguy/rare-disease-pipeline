@@ -1,0 +1,2 @@
+input: "/data/humangen_kircherlab/Users/hassan/run_rare/rare-disease-pipeline/samplesheets/demultiplexed_GS369.csv"
+outdir: "/data/humangen_sfb1665_seqdata/short_read/processed_data/demultiplexed_GS369"

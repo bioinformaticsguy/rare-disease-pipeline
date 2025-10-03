@@ -12,6 +12,11 @@
 #SBATCH --mail-user=alihassan1697@gmail.com
 
 
+# Define variables for file paths
+PIPELINE_DIR="/data/humangen_kircherlab/Users/hassan/run_rare/rare-disease-pipeline"
+CONFIG_FILE="${PIPELINE_DIR}/configs/oomics_minimal.config"
+PARAMS_FILE="${PIPELINE_DIR}/yamls/omics_kiristian_GS369.yaml"
+
 module load singularity/v4.1.3
 module load nextflow/v24.04.3
 
@@ -20,18 +25,16 @@ echo "checking versions..."
 singularity --version
 nextflow -v
 
-
-# Define variables for file paths
-PIPELINE_DIR="/data/humangen_kircherlab/Users/hassan/run_rare/rare-disease-pipeline"
-CONFIG_FILE="${PIPELINE_DIR}/configs/oomics_minimal.config"
-PARAMS_FILE="${PIPELINE_DIR}/yamls/omics_kiristian_GS369.yaml"
-
-
-
 # Run the rare diseae workflow
 echo "Running Next flow rare disease pipeline..."
+cd $SCRATCH
 pwd
 
+# Copy necessary files to scratch (if needed)
+cp "$CONFIG_FILE" .
+cp "$PARAMS_FILE" .
+
+ls 
 
 # Run with variables
 nextflow run nf-core/raredisease \
