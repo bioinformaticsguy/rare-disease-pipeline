@@ -48,7 +48,10 @@
 #
 # NOTES:
 #   - Script searches for sample names as SUBSTRINGS in directory names
-#   - Script searches for files matching pattern: *_1.fq.gz and *_2.fq.gz
+#   - Script searches for files matching patterns: 
+#     * *_1.fq.gz/*_2.fq.gz 
+#     * *_R1_*.fastq.gz/*_R2_*.fastq.gz
+#     * *.R1.fq.gz/*.R2.fq.gz
 #   - If sample exists in multiple directories, all instances will be included
 #   - Lane numbers are extracted from filenames (e.g., _L1_) or default to 1
 #   - Default values: sex=0, phenotype=2, paternal_id=0, maternal_id=0
@@ -70,17 +73,13 @@ OUTPUT="$3"
 # Split colon-separated directories
 IFS=':' read -ra SAMPLES_DIRS <<< "$SAMPLES_DIRS_STRING"
 
-# Split comma-separated sample names (FIXED: This was missing!)
+# Split comma-separated sample names
 IFS=',' read -ra SAMPLES <<< "$SAMPLE_NAMES"
 
-# Add this line to count total requested samples
+# Add counter for requested samples
 total_requested_samples=${#SAMPLES[@]}
-
-# Add this variable at the beginning after splitting samples
 samples_found=0
 declare -A found_samples_list
-declare -A found_samples_list
-
 
 # Create CSV Header
 echo "sample,lane,fastq_1,fastq_2,sex,phenotype,paternal_id,maternal_id,case_id" > "$OUTPUT"
@@ -117,54 +116,54 @@ for SAMPLES_DIR in "${SAMPLES_DIRS[@]}"; do
             dir_name=$(basename "$sample_dir")
             
             echo "    📁 Found matching directory: $dir_name"
-                
+            
             # Find all FASTQ files with multiple patterns in one loop
             found_files=false
             for fq1 in "$sample_dir"/*_1.fq.gz "$sample_dir"/*_R1_*.fastq.gz "$sample_dir"/*"$sample"*.R1.fq.gz; do
-            # Check if glob matched any files
-            if [[ ! -f "$fq1" ]]; then
-                continue
-            fi
-            
-            found_files=true
-            
-            # Derive matching R2 file based on pattern
-            if [[ "$fq1" == *"_1.fq.gz" ]]; then
-                # Pattern: *_1.fq.gz -> *_2.fq.gz
-                fq2="${fq1/_1.fq.gz/_2.fq.gz}"
-                # Extract lane from filename
-                lane=$(basename "$fq1" | sed -n 's/.*_L\([0-9]*\)_1.fq.gz/\1/p')
-            elif [[ "$fq1" == *"_R1_"*".fastq.gz" ]]; then
-                # Pattern: *_R1_*.fastq.gz -> *_R2_*.fastq.gz
-                fq2="${fq1/_R1_/_R2_}"
-                # Extract lane from *_L###_R1_* pattern
-                lane=$(basename "$fq1" | sed -n 's/.*_L\([0-9]*\)_R1_.*/\1/p')
-            else
-                # Pattern: *.R1.fq.gz -> *.R2.fq.gz
-                fq2="${fq1/.R1.fq.gz/.R2.fq.gz}"
-                # No lane info in this pattern, use default
-                lane=""
-            fi
-            
-            # If no lane found, use 1 as default
-            if [[ -z "$lane" ]]; then
-                lane="1"
-            fi
-            
-            # Check both files exist
-            if [[ -f "$fq1" && -f "$fq2" ]]; then
-                echo "      ✅ Adding files: $(basename "$fq1"), $(basename "$fq2")"
-                
-                # Write to CSV: sample,lane,fastq_1,fastq_2,sex,phenotype,paternal_id,maternal_id,case_id
-                echo "${sample},${lane},${fq1},${fq2},0,2,0,0,case_${sample}" >> "$OUTPUT"
-                if [[ "${found_samples_list[$sample]}" != "1" ]]; then
-                    found_samples_list[$sample]=1
-                    ((samples_found++))
+                # Check if glob matched any files
+                if [[ ! -f "$fq1" ]]; then
+                    continue
                 fi
-            else
-                echo "      ⚠️  Missing paired file for: $(basename "$fq1")" >&2
-            fi
-        done
+                
+                found_files=true
+                
+                # Derive matching R2 file based on pattern
+                if [[ "$fq1" == *"_1.fq.gz" ]]; then
+                    # Pattern: *_1.fq.gz -> *_2.fq.gz
+                    fq2="${fq1/_1.fq.gz/_2.fq.gz}"
+                    # Extract lane from filename
+                    lane=$(basename "$fq1" | sed -n 's/.*_L\([0-9]*\)_1.fq.gz/\1/p')
+                elif [[ "$fq1" == *"_R1_"*".fastq.gz" ]]; then
+                    # Pattern: *_R1_*.fastq.gz -> *_R2_*.fastq.gz
+                    fq2="${fq1/_R1_/_R2_}"
+                    # Extract lane from *_L###_R1_* pattern
+                    lane=$(basename "$fq1" | sed -n 's/.*_L\([0-9]*\)_R1_.*/\1/p')
+                else
+                    # Pattern: *.R1.fq.gz -> *.R2.fq.gz
+                    fq2="${fq1/.R1.fq.gz/.R2.fq.gz}"
+                    # No lane info in this pattern, use default
+                    lane=""
+                fi
+                
+                # If no lane found, use 1 as default
+                if [[ -z "$lane" ]]; then
+                    lane="1"
+                fi
+                
+                # Check both files exist
+                if [[ -f "$fq1" && -f "$fq2" ]]; then
+                    echo "      ✅ Adding files: $(basename "$fq1"), $(basename "$fq2")"
+                    
+                    # Write to CSV: sample,lane,fastq_1,fastq_2,sex,phenotype,paternal_id,maternal_id,case_id
+                    echo "${sample},${lane},${fq1},${fq2},0,2,0,0,case_${sample}" >> "$OUTPUT"
+                    if [[ "${found_samples_list[$sample]}" != "1" ]]; then
+                        found_samples_list[$sample]=1
+                        ((samples_found++))
+                    fi
+                else
+                    echo "      ⚠️  Missing paired file for: $(basename "$fq1")" >&2
+                fi
+            done
             
             if [[ "$found_files" == false ]]; then
                 echo "      ⚠️  No FASTQ files found in $sample_dir" >&2
