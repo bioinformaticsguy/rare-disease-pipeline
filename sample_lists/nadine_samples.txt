@@ -1,0 +1,6 @@
+/data/humangen_kircherlab/Users/hassan/data/combined_fq/output/GS608
+/data/humangen_sfb1665_seqdata/short_read/raw/A5020_DNA_98_GS467
+/data/humangen_sfb1665_seqdata/short_read/raw/A5020_DNA_92_KiGS23re
+/data/humangen_sfb1665_seqdata/short_read/raw/A5020_DNA_82_KIGS28
+/data/humangen_sfb1665_seqdata/short_read/raw/A5020_DNA_85_KIGS32be
+/data/humangen_sfb1665_seqdata/short_read/raw/A4842_DNA_42
