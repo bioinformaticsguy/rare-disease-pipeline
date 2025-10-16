@@ -2,6 +2,7 @@
 
 # Script to generate individual sample CSV files from a list of sample paths
 # Usage: ./generate_sample_csvs.sh <sample_list_file> <output_csv_directory>
+# Real Example: ./create_multiple_csvs.sh sample_lists/batch_001_size10.txt samplesheets/
 
 # Check if correct number of arguments provided
 if [ "$#" -ne 2 ]; then
@@ -12,7 +13,7 @@ if [ "$#" -ne 2 ]; then
 fi
 
 SAMPLE_LIST="$1"
-OUTPUT_DIR="$2"
+BASE_OUTPUT_DIR="$2"
 
 # Check if sample list file exists
 if [ ! -f "$SAMPLE_LIST" ]; then
@@ -20,10 +21,17 @@ if [ ! -f "$SAMPLE_LIST" ]; then
     exit 1
 fi
 
+# Extract the sample list name (without path and .txt extension)
+SAMPLE_LIST_NAME=$(basename "$SAMPLE_LIST" .txt)
+
+# Create output directory with sample list name as subfolder
+OUTPUT_DIR="${BASE_OUTPUT_DIR}/${SAMPLE_LIST_NAME}"
+
 # Create output directory if it doesn't exist
 mkdir -p "$OUTPUT_DIR"
 
 echo "Processing samples from: $SAMPLE_LIST"
+echo "Sample list name: $SAMPLE_LIST_NAME"
 echo "Output directory: $OUTPUT_DIR"
 echo "----------------------------------------"
 
