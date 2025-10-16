@@ -27,13 +27,15 @@ nextflow -v
 # Get config and params files from command line arguments
 CONFIG_FILE="$1"
 CSV_FILE="$2"
-BASE_OUTPUT_DIR="/data/humangen_kircherlab/Users/hassan/run_rare/rare-disease-pipeline/outputs"
+BASE_OUTPUT_DIR="/data/humangen_sfb1665_seqdata/short_read/processed_data/batch_outputs"
 
 
 # Extract sample name from CSV filename
 CSV_BASENAME=$(basename "$CSV_FILE")
 SAMPLE_NAME="${CSV_BASENAME%.csv}"
 
+# Clean up any stale parameter files
+rm -f .params_*.json
 
 if [ -z "$CONFIG_FILE" ] || [ -z "$CSV_FILE" ]; then
     echo "Error: Config and CSV files must be provided"
