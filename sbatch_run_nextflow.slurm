@@ -26,26 +26,20 @@ nextflow -v
 # Define variables for file paths
 # Get config and params files from command line arguments
 CONFIG_FILE="$1"
-PARAMS_FILE="$2"
 JOB_NAME="${3:-run_rare_disease}"  # Default to 'run_rare_disease' if not provided
 
 
 
 # Validate that both arguments were provided
-if [ -z "$CONFIG_FILE" ] || [ -z "$PARAMS_FILE" ]; then
-    echo "Error: Both config and params files must be provided"
-    echo "Usage: sbatch $0 <config_file> <params_file>"
+if [ -z "$CONFIG_FILE" ]; then
+    echo "Error: Config file must be provided"
+    echo "Usage: sbatch $0 <config_file>"
     exit 1
 fi
 
 # Check if files exist
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "Error: Config file not found: $CONFIG_FILE"
-    exit 1
-fi
-
-if [ ! -f "$PARAMS_FILE" ]; then
-    echo "Error: Params file not found: $PARAMS_FILE"
     exit 1
 fi
 
@@ -60,5 +54,6 @@ nextflow run nf-core/raredisease \
     -revision 2.6.0 \
     -profile singularity \
     -c "$CONFIG_FILE" \
-    --input "/data/humangen_kircherlab/Users/hassan/run_rare/rare-disease-pipeline/samplesheets/debug_samples.csv" \
-    --outdir "/data/humangen_kircherlab/Users/hassan/run_rare/rare-disease-pipeline/debug_outputs/001_input_in_terminal"
+    --input "/data/humangen_kircherlab/Users/hassan/run_rare/rare-disease-pipeline/samplesheets/sample_sheet_30_demultiplexed.csv" \
+    --outdir "/data/humangen_kircherlab/Users/hassan/run_rare/rare-disease-pipeline/outputs/sample_sheet_30_demultiplexed" \
+    -resume
