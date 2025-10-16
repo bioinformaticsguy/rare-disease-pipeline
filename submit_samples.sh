@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Script to submit multiple sample jobs from a directory of CSV files
-# Usage: ./submit_multiple_samples.sh <config_file> <csv_directory>
+# Usage: ./submit_samples.sh <config_file> <csv_directory>
+# Real Example: ./submit_samples.sh configs/omics_sep_work_dirs.config samplesheets/batch_001_size10/
 
 # Check if correct number of arguments provided
 if [ "$#" -ne 2 ]; then
@@ -34,6 +35,11 @@ if [ "$csv_count" -eq 0 ]; then
     exit 1
 fi
 
+# Create temp directory for modified configs in current directory
+TEMP_DIR="./temp_configs"
+mkdir -p "$TEMP_DIR"
+echo "Created temporary config directory: $TEMP_DIR"
+
 echo "=========================================="
 echo "Submitting jobs for $csv_count samples"
 echo "Config: $CONFIG_FILE"
@@ -51,21 +57,27 @@ for csv_file in "$CSV_DIR"/*.csv; do
     # Extract sample name from CSV filename
     sample_name=$(basename "$csv_file" .csv)
     
+    # Create sample-specific config file
+    temp_config="$TEMP_DIR/${sample_name}.config"
+    cp "$CONFIG_FILE" "$temp_config"
+    echo "" >> "$temp_config"
+    echo "workDir = \"./workdir/$sample_name\"" >> "$temp_config"    
     echo "Submitting: $sample_name"
     
-    # Submit job with sample name as job name
+    # # Submit job with sample name as job name using the temp config
     sbatch --job-name="${sample_name}" run_from_csv.slurm \
-        "$CONFIG_FILE" \
+        "$temp_config" \
         "$csv_file"
     
     submitted=$((submitted + 1))
     
     # Small delay to avoid overwhelming the scheduler
-    sleep 0.5
+    sleep 5.5
 done
 
 echo "=========================================="
 echo "Total jobs submitted: $submitted"
+echo "Temp config directory: $TEMP_DIR"
 echo "=========================================="
 echo ""
 echo "Check job status with: squeue -u \$USER"
