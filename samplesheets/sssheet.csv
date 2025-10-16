@@ -1,2 +1,0 @@
-sample,lane,fastq_1,fastq_2,sex,phenotype,paternal_id,maternal_id,case_id
-hugelymodelbat,1,/data/cephfs-2/unmirrored/groups/kircher/users/alhassa_m/rare_data/1_171015_HHT5NDSXX_hugelymodelbat_XXXXXX_1.fastq.gz,/data/cephfs-2/unmirrored/groups/kircher/users/alhassa_m/rare_data/1_171015_HHT5NDSXX_hugelymodelbat_XXXXXX_2.fastq.gz,1,2,0,0,justhusky
