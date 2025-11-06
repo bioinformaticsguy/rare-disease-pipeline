@@ -27,6 +27,8 @@ nextflow -v
 # Get config and params files from command line arguments
 CONFIG_FILE="$1"
 CSV_FILE="$2"
+RESUME_FLAG="$3"
+
 BASE_OUTPUT_DIR="/data/humangen_sfb1665_seqdata/short_read/processed_data/batch_outputs"
 
 
@@ -58,6 +60,20 @@ fi
 input_dir=$(dirname "$CSV_FILE")
 output_dir="${BASE_OUTPUT_DIR}/${SAMPLE_NAME}"
 
+
+# Determine whether to add -resume
+RESUME_ARG=""
+if [ -n "$RESUME_FLAG" ]; then
+    case "$RESUME_FLAG" in
+        resume|--resume|-r|true|--resume=true)
+            RESUME_ARG="-resume"
+            ;;
+        *)
+            echo "Warning: unknown third argument '$RESUME_FLAG' (expected resume|--resume|-r). Ignoring."
+            ;;
+    esac
+fi
+
 # Run the rare disease workflow
 echo "========================================"
 echo "Running Nextflow Rare Disease Pipeline"
@@ -78,4 +94,5 @@ nextflow run nf-core/raredisease \
     -profile singularity \
     -c "$CONFIG_FILE" \
     --input "$CSV_FILE" \
-    --outdir "$output_dir"
+    --outdir "$output_dir" \
+    $RESUME_ARG

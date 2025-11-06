@@ -3,17 +3,34 @@
 # Script to submit multiple sample jobs from a directory of CSV files
 # Usage: ./submit_samples.sh <config_file> <csv_directory>
 # Real Example: ./submit_samples.sh configs/omics_sep_work_dirs.config samplesheets/batch_001_size10/
+# Example with resume: ./submit_samples.sh configs/omics_sep_work_dirs.config samplesheets/batch_001_size10/ --resume
 
-# Check if correct number of arguments provided
-if [ "$#" -ne 2 ]; then
+# Check if correct number of arguments provided (2 required, optional 3rd flag)
+if [ "$#" -lt 2 ] || [ "$#" -gt 3 ]; then
     echo "Error: Incorrect number of arguments"
-    echo "Usage: $0 <config_file> <csv_directory>"
+    echo "Usage: $0 <config_file> <csv_directory> [--resume|-r]"
     echo "Example: $0 configs/oomics_minimal.config samplesheets/indi"
     exit 1
 fi
 
 CONFIG_FILE="$1"
 CSV_DIR="$2"
+RESUME_FLAG=0
+
+
+# Optional resume flag as 3rd argument
+if [ "$#" -eq 3 ]; then
+    case "$3" in
+        --resume|-r)
+            RESUME_FLAG=1
+            ;;
+        *)
+            echo "Error: Unknown option: $3"
+            echo "Supported optional flag: --resume or -r"
+            exit 1
+            ;;
+    esac
+fi
 
 # Check if config file exists
 if [ ! -f "$CONFIG_FILE" ]; then
@@ -64,10 +81,17 @@ for csv_file in "$CSV_DIR"/*.csv; do
     echo "workDir = \"./workdir/$sample_name\"" >> "$temp_config"    
     echo "Submitting: $sample_name"
     
-    # # Submit job with sample name as job name using the temp config
-    sbatch --job-name="${sample_name}" run_from_csv.slurm \
-        "$temp_config" \
-        "$csv_file"
+    # Submit job; if resume flag was set, append --resume to slurm script args
+    if [ "$RESUME_FLAG" -eq 1 ]; then
+        sbatch --job-name="${sample_name}" run_from_csv.slurm \
+            "$temp_config" \
+            "$csv_file" \
+            --resume
+    else
+        sbatch --job-name="${sample_name}" run_from_csv.slurm \
+            "$temp_config" \
+            "$csv_file"
+    fi
     
     submitted=$((submitted + 1))
     
